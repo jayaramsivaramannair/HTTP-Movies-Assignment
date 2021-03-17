@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import MovieCard from "./MovieCard";
 
 function MovieList({ movies, getMovieList }) {
+  //Fetches the movies when this component loads
   useEffect(() => {
     getMovieList();
   }, [getMovieList])

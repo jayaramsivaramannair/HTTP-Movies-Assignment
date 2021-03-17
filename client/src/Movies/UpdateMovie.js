@@ -34,8 +34,9 @@ const UpdateMovie = ({ setMovieList, movieList }) => {
 
     const registerChange = (evt) => {
         console.log(currentMovie);
-        //let formValue = (evt.target.name === 'stars' ? evt.target.value.split(',') : evt.target.value);
-        setCurrentMovie({ ...currentMovie, [evt.target.name]: evt.target.value });
+        //This allows us to change the typed values back into an array
+        let formValue = (evt.target.name === 'stars' ? evt.target.value.split(',') : evt.target.value);
+        setCurrentMovie({ ...currentMovie, [evt.target.name]: formValue });
     }
 
     const updateChanges = (evt) => {
@@ -78,7 +79,6 @@ const UpdateMovie = ({ setMovieList, movieList }) => {
                         onChange={registerChange}
                     />
                 </label>
-                {/*
                 <label>Stars:
                     <input
                         name="stars"
@@ -88,7 +88,6 @@ const UpdateMovie = ({ setMovieList, movieList }) => {
                         onChange={registerChange}
                     />
                 </label>
-                */}
                 <button>Confirm Changes!</button>
             </form>
         </div>
