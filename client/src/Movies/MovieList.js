@@ -10,6 +10,9 @@ function MovieList({ movies, getMovieList }) {
 
   return (
     <div className="movie-list">
+      <Link to="/add-movie" style={{ textDecoration: 'none' }}>
+        Add A New Movie
+      </Link>
       {
         movies.map(movie => (
           <Link key={movie.id} to={`/movies/${movie.id}`}>
