@@ -1,40 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-const UpdateMovie = (props) => {
+const UpdateMovie = ({ setMovieList, movieList }) => {
     const [currentMovie, setCurrentMovie] = useState({
+        id: '',
         title: '',
         director: '',
         metascore: '',
-        stars: '', //Values put into 'stars' property must be an array of strings. 
+        stars: []
     })
     const { id } = useParams();
     console.log(id);
+
+    const history = useHistory();
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/movies/${id}`)
             .then((res) => {
                 console.log(res);
                 setCurrentMovie({
+                    id: res.data.id,
                     title: res.data.title,
                     director: res.data.director,
                     metascore: res.data.metascore,
-                    stars: res.data.stars.join(',')
-                });
+                    stars: res.data.stars
+                })
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                console.log(err);
+            })
     }, [id])
 
     const registerChange = (evt) => {
         console.log(currentMovie);
-        let formValue = (evt.target.name === 'stars' ? evt.target.value.split(',') : evt.target.value);
-        setCurrentMovie({ ...currentMovie, [evt.target.name]: formValue });
+        //let formValue = (evt.target.name === 'stars' ? evt.target.value.split(',') : evt.target.value);
+        setCurrentMovie({ ...currentMovie, [evt.target.name]: evt.target.value });
+    }
+
+    const updateChanges = (evt) => {
+        evt.preventDefault();
+        axios.put(`http://localhost:5000/api/movies/${id}`, currentMovie)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch(err => console.log(err));
+        history.push('/');
     }
 
     return (
         <div>
-            <form>
+            <form onSubmit={updateChanges}>
                 <label>Title:
                     <input
                         name="title"
@@ -62,6 +78,7 @@ const UpdateMovie = (props) => {
                         onChange={registerChange}
                     />
                 </label>
+                {/*
                 <label>Stars:
                     <input
                         name="stars"
@@ -71,6 +88,7 @@ const UpdateMovie = (props) => {
                         onChange={registerChange}
                     />
                 </label>
+                */}
                 <button>Confirm Changes!</button>
             </form>
         </div>

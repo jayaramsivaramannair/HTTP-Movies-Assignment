@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Route } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
@@ -21,16 +21,18 @@ const App = () => {
     setSavedList([...savedList, movie]);
   };
 
+  /*
   useEffect(() => {
     getMovieList();
   }, []);
+  */
 
   return (
     <>
       <SavedList list={savedList} />
 
       <Route exact path="/">
-        <MovieList movies={movieList} />
+        <MovieList movies={movieList} getMovieList={getMovieList} />
       </Route>
 
       <Route path="/movies/:id">
@@ -38,7 +40,7 @@ const App = () => {
       </Route>
 
       <Route path="/update-movie/:id">
-        <UpdateMovie />
+        <UpdateMovie setMovieList={setMovieList} movieList={movieList} />
       </Route>
     </>
   );
